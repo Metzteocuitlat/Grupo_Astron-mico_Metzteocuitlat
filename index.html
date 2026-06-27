@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metzteocuitlatl | Grupo Astronómico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cyan: #2fa39a;
+            --magenta: #c0463a;
+            --cream: #e6d6ad;
+            --moon: #9a9aa5;
+            --purple-dark: #14182e;
+            --purple-mid: #1c2142;
+            --purple-light: #2a3158;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-mid) 50%, #0d1020 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Nebula glow background */
+        .nebula {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(40% 50% at 80% 15%, rgba(192, 70, 58, 0.18), transparent 70%),
+                radial-gradient(45% 55% at 12% 35%, rgba(47, 163, 154, 0.16), transparent 70%),
+                radial-gradient(50% 50% at 60% 90%, rgba(230, 214, 173, 0.18), transparent 70%);
+            animation: nebulaDrift 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes nebulaDrift {
+            0% { transform: scale(1) translateY(0); opacity: 0.8; }
+            100% { transform: scale(1.15) translateY(-3%); opacity: 1; }
+        }
+
+        /* Animated Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(16, 19, 42, 0.92);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0.7rem 5%;
+            border-bottom: 1px solid rgba(47, 163, 154, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            color: var(--cream);
+            font-weight: 700;
+            font-size: 1.05rem;
+            white-space: nowrap;
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--magenta);
+            text-shadow: 0 0 10px var(--magenta);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cyan);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 100px 5% 50px;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 900px;
+        }
+
+        .hero-logo {
+            width: clamp(120px, 18vw, 175px);
+            height: auto;
+            margin: 0 auto 1.5rem;
+            display: block;
+            filter: drop-shadow(0 0 30px rgba(47, 163, 154, 0.4));
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin-bottom: 1rem;
+            color: var(--cream);
+            letter-spacing: 0.02em;
+            animation: glow 5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 18px rgba(47, 163, 154, 0.35); }
+            50% { text-shadow: 0 0 24px rgba(230, 214, 173, 0.4); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--cyan);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #e0e0e0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: var(--purple-dark);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: #34b5a9;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cream);
+            border: 2px solid rgba(230, 214, 173, 0.55);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--cream);
+            transform: translateY(-3px);
+        }
+
+        /* Floating Space Elements */
+        .space-element {
+            position: absolute;
+            opacity: 0.85;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .big-planet {
+            left: -7%;
+            bottom: -14%;
+            width: min(46vw, 500px);
+            opacity: 0.92;
+            animation: float 30s infinite ease-in-out;
+        }
+
+        .yellow-glow {
+            left: 24%;
+            bottom: 26%;
+            width: 130px;
+            filter: drop-shadow(0 0 35px rgba(230, 214, 173, 0.7));
+            animation: glowPulse 6s infinite ease-in-out;
+        }
+
+        .rocket-1 {
+            top: 0;
+            left: 0;
+            width: 95px;
+            filter: drop-shadow(0 0 22px rgba(47, 163, 154, 0.65));
+            animation: flyRocket 16s infinite linear;
+        }
+
+        .comet-1 {
+            top: 0;
+            left: 0;
+            width: 230px;
+            filter: drop-shadow(0 0 16px rgba(47, 163, 154, 0.5));
+            animation: fallComet 11s infinite ease-in;
+        }
+
+        .comet-2 {
+            top: 0;
+            left: 0;
+            width: 150px;
+            filter: drop-shadow(0 0 14px rgba(192, 70, 58, 0.5));
+            animation: fallComet 8s infinite ease-in;
+            animation-delay: -4s;
+        }
+
+        .small-purple {
+            top: 9%;
+            left: 43%;
+            width: 78px;
+            animation: float 22s infinite ease-in-out;
+        }
+
+        .small-cyan {
+            top: 54%;
+            right: 11%;
+            width: 160px;
+            filter: drop-shadow(0 0 14px rgba(60, 184, 173, 0.4));
+            animation: float 24s infinite ease-in-out;
+        }
+
+        .small-pink {
+            top: 32%;
+            right: 24%;
+            width: 58px;
+            filter: drop-shadow(0 0 12px rgba(192, 70, 58, 0.5));
+            animation: float 19s infinite ease-in-out reverse;
+        }
+
+        .ring-circle {
+            bottom: 7%;
+            right: 6%;
+            width: 150px;
+            filter: drop-shadow(0 0 18px rgba(47, 163, 154, 0.45));
+            animation: float 26s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-22px) rotate(3deg); }
+            66% { transform: translateY(22px) rotate(-3deg); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { filter: drop-shadow(0 0 28px rgba(230, 214, 173, 0.55)); }
+            50% { filter: drop-shadow(0 0 48px rgba(230, 214, 173, 0.85)); }
+        }
+
+        /* Rocket flying diagonally across the whole screen */
+        @keyframes flyRocket {
+            0% { transform: translate(-140px, 110vh) rotate(45deg); }
+            100% { transform: translate(108vw, -180px) rotate(45deg); }
+        }
+
+        /* Comets falling from upper-right to lower-left */
+        @keyframes fallComet {
+            0% { transform: translate(110vw, -18vh) rotate(14deg); opacity: 0; }
+            12% { opacity: 0.9; }
+            88% { opacity: 0.9; }
+            100% { transform: translate(-50vw, 42vh) rotate(14deg); opacity: 0; }
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 5%;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Decorative planets scattered across sections */
+        .section-planet {
+            position: absolute;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float 28s infinite ease-in-out;
+        }
+
+        .planet-cyan { filter: drop-shadow(0 0 22px rgba(60, 184, 173, 0.5)); }
+        .planet-pink { filter: drop-shadow(0 0 20px rgba(192, 70, 58, 0.5)); }
+        .planet-purple { filter: drop-shadow(0 0 16px rgba(90, 96, 140, 0.5)); }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--cream);
+            letter-spacing: 0.01em;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 3px;
+            margin: 1rem auto 0;
+            border-radius: 4px;
+            background: var(--cyan);
+        }
+
+        /* Activities Grid */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .activity-card {
+            background: rgba(28, 33, 66, 0.55);
+            border: 1px solid rgba(154, 154, 165, 0.16);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--cyan);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .activity-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--cyan);
+            line-height: 0;
+        }
+
+        /* Flat line icons */
+        .ic {
+            width: 1em;
+            height: 1em;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .activity-card h3 {
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Impact Section */
+        .impact {
+            background: linear-gradient(180deg, transparent, rgba(47, 163, 154, 0.1), transparent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(28, 33, 66, 0.55);
+            border-radius: 14px;
+            border: 1px solid rgba(47, 163, 154, 0.5);
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--cyan);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .stat-label {
+            margin-top: 0.5rem;
+            color: #e0e0e0;
+        }
+
+        /* Project Section */
+        .eyebrow {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--cyan);
+            margin-bottom: 0.9rem;
+        }
+
+        .section-lead {
+            text-align: center;
+            max-width: 720px;
+            margin: -1.5rem auto 3rem;
+            color: #c3c7d6;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .project-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Key facts strip */
+        .project-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1px;
+            background: rgba(154, 154, 165, 0.16);
+            border: 1px solid rgba(154, 154, 165, 0.16);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .fact {
+            background: #141a30;
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+
+        .fact-num {
+            display: block;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .fact-lbl {
+            display: block;
+            margin-top: 0.35rem;
+            font-size: 0.85rem;
+            color: #9a9aa5;
+        }
+
+        .project-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .project-h {
+            color: var(--cream);
+            font-size: 1.15rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .project-cols p {
+            color: #cfd3e0;
+            line-height: 1.75;
+        }
+
+        .project-quote {
+            margin: 0;
+            border-left: 3px solid var(--magenta);
+            padding-left: 1.1rem;
+            font-style: italic;
+            color: #d7dae6;
+            line-height: 1.75;
+        }
+
+        /* Budget breakdown as an editorial line-item list */
+        .budget-list {
+            list-style: none;
+            margin: 0 0 3rem;
+            border-top: 1px solid rgba(154, 154, 165, 0.14);
+        }
+
+        .budget-list li {
+            display: grid;
+            grid-template-columns: 210px 1fr auto;
+            gap: 1.2rem;
+            align-items: baseline;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(154, 154, 165, 0.14);
+        }
+
+        .b-name { color: var(--cream); font-weight: 600; }
+        .b-desc { color: #9a9aa5; font-size: 0.92rem; line-height: 1.5; }
+        .b-amt {
+            color: var(--cyan);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .allies {
+            color: #9a9aa5;
+            line-height: 1.75;
+        }
+
+        @media (max-width: 700px) {
+            .project-cols { grid-template-columns: 1fr; }
+            .budget-list li { grid-template-columns: 1fr auto; }
+            .b-desc { grid-column: 1 / -1; }
+        }
+
+        /* Recognition Cards */
+        .recognition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .recognition-card {
+            background: rgba(28, 33, 66, 0.55);
+            border: 1px solid rgba(192, 70, 58, 0.45);
+            border-left: 3px solid var(--magenta);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .recognition-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .recognition-icon {
+            font-size: 2rem;
+            color: var(--magenta);
+            line-height: 0;
+            margin-bottom: 1rem;
+        }
+
+        .recognition-card h3 {
+            color: var(--magenta);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Approach Section - NEW */
+        .approach-section {
+            background: linear-gradient(180deg, transparent, rgba(192,70,58,0.1), transparent);
+        }
+
+        .approach-intro {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .approach-card {
+            background: rgba(28, 33, 66, 0.55);
+            border: 1px solid rgba(154, 154, 165, 0.16);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--cyan);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .approach-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--cream);
+            line-height: 0;
+        }
+
+        .approach-card h3 {
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 10;
+            margin-top: 4rem;
+            padding: 4rem 5% 2rem;
+            background:
+                radial-gradient(60% 100% at 50% 0%, rgba(47, 163, 154, 0.08), transparent 70%),
+                rgba(13, 16, 32, 0.85);
+            border-top: 1px solid rgba(47, 163, 154, 0.35);
+            backdrop-filter: blur(8px);
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1.2fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--cream);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .footer-logo img {
+            width: 44px;
+            height: 44px;
+        }
+
+        .footer-subtitle {
+            color: var(--cyan);
+            font-size: 1.05rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        .footer-description {
+            line-height: 1.8;
+            color: #cfcfe0;
+            max-width: 38ch;
+        }
+
+        .footer-column h4 {
+            color: var(--magenta);
+            margin-bottom: 1.3rem;
+            font-size: 1.05rem;
+            letter-spacing: 0.04em;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-column a {
+            color: #cfcfe0;
+            text-decoration: none;
+            transition: color 0.25s, padding-left 0.25s;
+        }
+
+        .footer-column a:hover {
+            color: var(--cyan);
+            padding-left: 6px;
+        }
+
+        .footer-meta {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-bottom: 1.1rem;
+            color: #cfcfe0;
+            line-height: 1.6;
+        }
+
+        .footer-meta .ic {
+            font-size: 1.25rem;
+            color: var(--cyan);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .footer-email {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: text-shadow 0.25s, color 0.25s;
+        }
+
+        .footer-email:hover {
+            color: var(--magenta);
+            text-shadow: 0 0 12px var(--magenta);
+        }
+
+        .footer-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 1.8rem;
+            color: #8a8aa0;
+            font-size: 0.9rem;
+        }
+
+        .footer-tagline {
+            color: var(--cyan);
+            opacity: 0.85;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .space-element,
+            .section-planet {
+                display: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Nebula + Animated Stars -->
+    <div class="nebula"></div>
+    <div class="stars" id="stars"></div>
+
+    <!-- Reusable planet shapes (referenced with <use> across sections) -->
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+        <defs>
+            <pattern id="hcCyan" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                <line x1="8" y1="0" x2="8" y2="16" stroke="#1d6f68" stroke-width="5" stroke-linecap="round" opacity="0.5"/>
+            </pattern>
+            <pattern id="hcPink" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                <line x1="8" y1="0" x2="8" y2="16" stroke="#8a2e25" stroke-width="5" stroke-linecap="round" opacity="0.45"/>
+            </pattern>
+            <pattern id="hcPurple" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                <line x1="8" y1="0" x2="8" y2="16" stroke="#2a2e52" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+            </pattern>
+            <clipPath id="clipCyan"><circle cx="110" cy="78" r="56"/></clipPath>
+            <clipPath id="clipPink"><circle cx="70" cy="70" r="54"/></clipPath>
+            <clipPath id="clipPurple"><circle cx="70" cy="70" r="48"/></clipPath>
+
+            <g id="planetCyan">
+                <circle cx="110" cy="78" r="56" fill="#3cb8ad"/>
+                <g clip-path="url(#clipCyan)"><rect width="220" height="150" fill="url(#hcCyan)"/></g>
+                <g stroke="#9a9aa5" stroke-width="7" stroke-linecap="round" opacity="0.5">
+                    <line x1="18" y1="52" x2="56" y2="46"/>
+                    <line x1="72" y1="42" x2="122" y2="34"/>
+                    <line x1="152" y1="36" x2="206" y2="27"/>
+                    <line x1="14" y1="90" x2="60" y2="83"/>
+                    <line x1="122" y1="74" x2="172" y2="66"/>
+                    <line x1="40" y1="118" x2="96" y2="109"/>
+                    <line x1="150" y1="102" x2="202" y2="93"/>
+                </g>
+            </g>
+
+            <g id="planetPink">
+                <circle cx="70" cy="70" r="54" fill="#c0463a"/>
+                <g clip-path="url(#clipPink)"><rect width="140" height="140" fill="url(#hcPink)"/></g>
+            </g>
+
+            <g id="planetPurple">
+                <circle cx="70" cy="70" r="48" fill="#4b5080"/>
+                <g clip-path="url(#clipPurple)"><rect width="140" height="140" fill="url(#hcPurple)"/></g>
+            </g>
+
+            <!-- Flat line icons (stroke = currentColor) -->
+            <symbol id="ic-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+            <symbol id="ic-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.5L4.8 18a2 2 0 0 0 1.7 3h11a2 2 0 0 0 1.7-3L14 9.5V3"/><path d="M7.2 15h9.6"/></symbol>
+            <symbol id="ic-geo" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="M9 9l2 2M13 5l2 2M6 13l2 2"/></symbol>
+            <symbol id="ic-telescope" viewBox="0 0 24 24"><path d="M2.5 13.6l3.3 1.2 12.2-6.7-1.7-3.1z"/><path d="M16.3 5l1.5 3"/><path d="M5.8 14.8 4 21M8.1 15.6 11 21"/></symbol>
+            <symbol id="ic-microscope" viewBox="0 0 24 24"><path d="M6 21h12M9 21v-3"/><path d="M9 18a6 6 0 0 0 6-6"/><path d="M10.5 5.5 14 9l-2.5 2.5L8 8z"/><path d="M13 4l2 2"/></symbol>
+            <symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 2l1.9 6.3L20 10l-6.1 1.7L12 18l-1.9-6.3L4 10l6.1-1.7z"/></symbol>
+            <symbol id="ic-clipboard" viewBox="0 0 24 24"><path d="M9 4H8a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1"/><rect x="9" y="2.5" width="6" height="3.2" rx="1"/><path d="M9 11h6M9 15h6"/></symbol>
+            <symbol id="ic-atom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></symbol>
+            <symbol id="ic-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></symbol>
+            <symbol id="ic-recycle" viewBox="0 0 24 24"><path d="M5 13a7 7 0 0 1 11.5-5.3"/><path d="M16 4.5 17 8l-3.5.8"/><path d="M19 11a7 7 0 0 1-11.5 5.3"/><path d="M8 19.5 7 16l3.5-.8"/></symbol>
+            <symbol id="ic-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="6"/><path d="M8.5 9 6 3h4l2 4M15.5 9 18 3h-4l-2 4"/><path d="M12 11.6l.9 1.9 2 .2-1.5 1.4.4 2-1.8-1-1.8 1 .4-2-1.5-1.4 2-.2z"/></symbol>
+            <symbol id="ic-building" viewBox="0 0 24 24"><path d="M3 21h18M4 9h16M5 9 12 4l7 5M7 9v9M11 9v9M13 9v9M17 9v9"/></symbol>
+            <symbol id="ic-signal" viewBox="0 0 24 24"><circle cx="12" cy="14" r="2"/><path d="M8.6 10.6a5 5 0 0 0 0 7M15.4 10.6a5 5 0 0 1 0 7M6.1 8.1a9 9 0 0 0 0 12M17.9 8.1a9 9 0 0 1 0 12"/></symbol>
+            <symbol id="ic-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.7 7-11a7 7 0 0 0-14 0c0 5.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+            <symbol id="ic-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 5 8-5"/></symbol>
+        </defs>
+    </svg>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="nav-brand">
+            <img src="logo-web.png" alt="Logo Metzteocuitlatl">
+            <span>Metzteocuitlatl</span>
+        </a>
+        <ul>
+            <li><a href="#actividades">Actividades</a></li>
+            <li><a href="#impacto">Impacto</a></li>
+            <li><a href="#proyecto">Proyecto</a></li>
+            <li><a href="#reconocimientos">Reconocimientos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Flat-style space illustration (matches brand identity) -->
+        <!-- Big hatched planet, cut off at the lower-left edge -->
+        <svg class="space-element big-planet" viewBox="0 0 400 400">
+            <defs>
+                <linearGradient id="bpFill" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#c0463a"/>
+                    <stop offset="60%" stop-color="#cc5a4a"/>
+                    <stop offset="100%" stop-color="#e6c2a0"/>
+                </linearGradient>
+                <pattern id="bpHatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                    <line x1="9" y1="0" x2="9" y2="18" stroke="#7d2a22" stroke-width="6" stroke-linecap="round" opacity="0.35"/>
+                </pattern>
+                <clipPath id="bpClip"><circle cx="200" cy="200" r="182"/></clipPath>
+            </defs>
+            <circle cx="200" cy="200" r="198" fill="none" stroke="#3a4068" stroke-width="6" opacity="0.45"/>
+            <circle cx="200" cy="200" r="182" fill="url(#bpFill)"/>
+            <g clip-path="url(#bpClip)"><rect width="400" height="400" fill="url(#bpHatch)"/></g>
+        </svg>
+
+        <!-- Glowing yellow circle overlapping the big planet -->
+        <svg class="space-element yellow-glow" viewBox="0 0 200 200">
+            <defs>
+                <radialGradient id="ygFill" cx="40%" cy="35%" r="75%">
+                    <stop offset="0%" stop-color="#f6efd6"/>
+                    <stop offset="70%" stop-color="#e6d6ad"/>
+                    <stop offset="100%" stop-color="#d9c48a"/>
+                </radialGradient>
+                <pattern id="ygHatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                    <line x1="7" y1="0" x2="7" y2="14" stroke="#bfa066" stroke-width="4" stroke-linecap="round" opacity="0.3"/>
+                </pattern>
+                <clipPath id="ygClip"><circle cx="100" cy="100" r="82"/></clipPath>
+            </defs>
+            <circle cx="100" cy="100" r="82" fill="url(#ygFill)"/>
+            <g clip-path="url(#ygClip)"><rect width="200" height="200" fill="url(#ygHatch)"/></g>
+        </svg>
+
+        <!-- Sleek glowing rocket with dashed exhaust trail -->
+        <svg class="space-element rocket-1" viewBox="0 0 160 360">
+            <defs>
+                <linearGradient id="rkBody" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#258d85"/>
+                    <stop offset="32%" stop-color="#cdeee8"/>
+                    <stop offset="50%" stop-color="#ffffff"/>
+                    <stop offset="68%" stop-color="#cdeee8"/>
+                    <stop offset="100%" stop-color="#3cb8ad"/>
+                </linearGradient>
+            </defs>
+            <!-- exhaust trail -->
+            <g stroke-linecap="round">
+                <line x1="80" y1="262" x2="80" y2="294" stroke="#a8e3da" stroke-width="11" opacity="0.85"/>
+                <line x1="64" y1="270" x2="64" y2="302" stroke="#3cb8ad" stroke-width="9" opacity="0.6"/>
+                <line x1="96" y1="268" x2="96" y2="300" stroke="#3cb8ad" stroke-width="9" opacity="0.6"/>
+                <line x1="74" y1="306" x2="74" y2="332" stroke="#3cb8ad" stroke-width="8" opacity="0.45"/>
+                <line x1="90" y1="310" x2="90" y2="336" stroke="#3cb8ad" stroke-width="8" opacity="0.4"/>
+                <line x1="80" y1="338" x2="80" y2="356" stroke="#3cb8ad" stroke-width="7" opacity="0.3"/>
+                <line x1="58" y1="320" x2="58" y2="338" stroke="#3cb8ad" stroke-width="6" opacity="0.3"/>
+                <line x1="102" y1="322" x2="102" y2="340" stroke="#3cb8ad" stroke-width="6" opacity="0.3"/>
+            </g>
+            <!-- body -->
+            <path d="M80 18 C102 70 110 122 107 162 C105 202 98 236 88 252 L72 252 C62 236 55 202 53 162 C50 122 58 70 80 18 Z" fill="url(#rkBody)"/>
+            <!-- nose fin tip -->
+            <path d="M80 6 L96 34 L80 26 L64 34 Z" fill="#4a4566"/>
+            <!-- window detail dashes -->
+            <g stroke="#14524d" stroke-width="6" stroke-linecap="round" opacity="0.55">
+                <line x1="71" y1="120" x2="89" y2="120"/>
+                <line x1="71" y1="136" x2="89" y2="136"/>
+                <line x1="74" y1="152" x2="86" y2="152"/>
+            </g>
+        </svg>
+
+        <!-- Falling meteor: bright head + tapering tail -->
+        <svg class="space-element comet-1" viewBox="0 0 320 120">
+            <defs>
+                <linearGradient id="cmTail" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#2fa39a" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#2fa39a" stop-opacity="0"/>
+                </linearGradient>
+                <radialGradient id="cmHead" cx="42%" cy="42%" r="62%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="50%" stop-color="#d7f1ec"/>
+                    <stop offset="100%" stop-color="#258d85"/>
+                </radialGradient>
+            </defs>
+            <path d="M66 44 L314 60 L66 76 Z" fill="url(#cmTail)"/>
+            <g stroke="#2fa39a" stroke-width="4" stroke-linecap="round" opacity="0.45">
+                <line x1="96" y1="34" x2="172" y2="36"/>
+                <line x1="96" y1="86" x2="172" y2="84"/>
+            </g>
+            <circle cx="60" cy="60" r="30" fill="url(#cmHead)"/>
+        </svg>
+
+        <!-- Second smaller falling meteor (magenta) -->
+        <svg class="space-element comet-2" viewBox="0 0 320 120">
+            <defs>
+                <linearGradient id="cmTail2" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#c0463a" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#c0463a" stop-opacity="0"/>
+                </linearGradient>
+                <radialGradient id="cmHead2" cx="42%" cy="42%" r="62%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="50%" stop-color="#e8bba6"/>
+                    <stop offset="100%" stop-color="#c0463a"/>
+                </radialGradient>
+            </defs>
+            <path d="M66 46 L314 60 L66 74 Z" fill="url(#cmTail2)"/>
+            <circle cx="60" cy="60" r="26" fill="url(#cmHead2)"/>
+        </svg>
+
+        <!-- Small purple planet with horizontal hatch -->
+        <svg class="space-element small-purple" viewBox="0 0 120 120">
+            <defs>
+                <pattern id="spHatch" width="12" height="12" patternUnits="userSpaceOnUse">
+                    <line x1="0" y1="6" x2="12" y2="6" stroke="#2c3052" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+                </pattern>
+                <clipPath id="spClip"><circle cx="60" cy="60" r="46"/></clipPath>
+            </defs>
+            <circle cx="60" cy="60" r="46" fill="#4b5080"/>
+            <g clip-path="url(#spClip)"><rect width="120" height="120" fill="url(#spHatch)"/></g>
+        </svg>
+
+        <!-- Small cyan planet with motion lines -->
+        <svg class="space-element small-cyan" viewBox="0 0 200 120">
+            <defs>
+                <pattern id="scHatch" width="12" height="12" patternUnits="userSpaceOnUse">
+                    <line x1="0" y1="6" x2="12" y2="6" stroke="#1a6660" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
+                </pattern>
+                <clipPath id="scClip"><circle cx="142" cy="60" r="42"/></clipPath>
+            </defs>
+            <g stroke="#9a9aa5" stroke-width="6" stroke-linecap="round" opacity="0.5">
+                <line x1="10" y1="60" x2="60" y2="60"/>
+                <line x1="24" y1="42" x2="66" y2="42"/>
+                <line x1="24" y1="78" x2="66" y2="78"/>
+            </g>
+            <circle cx="142" cy="60" r="42" fill="#3cb8ad"/>
+            <g clip-path="url(#scClip)"><rect width="200" height="120" fill="url(#scHatch)"/></g>
+        </svg>
+
+        <!-- Small solid pink planet -->
+        <svg class="space-element small-pink" viewBox="0 0 80 80">
+            <defs>
+                <pattern id="ppHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                    <line x1="5" y1="0" x2="5" y2="10" stroke="#8a2e25" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+                </pattern>
+                <clipPath id="ppClip"><circle cx="40" cy="40" r="30"/></clipPath>
+            </defs>
+            <circle cx="40" cy="40" r="30" fill="#c0463a"/>
+            <g clip-path="url(#ppClip)"><rect width="80" height="80" fill="url(#ppHatch)"/></g>
+        </svg>
+
+        <!-- Outlined cyan ring with faint interior hatch -->
+        <svg class="space-element ring-circle" viewBox="0 0 160 160">
+            <defs>
+                <pattern id="rcHatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                    <line x1="7" y1="0" x2="7" y2="14" stroke="#2a3052" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+                </pattern>
+                <clipPath id="rcClip"><circle cx="80" cy="80" r="68"/></clipPath>
+            </defs>
+            <circle cx="80" cy="80" r="68" fill="#181d38"/>
+            <g clip-path="url(#rcClip)"><rect width="160" height="160" fill="url(#rcHatch)"/></g>
+            <circle cx="80" cy="80" r="71" fill="none" stroke="#2fa39a" stroke-width="6"/>
+        </svg>
+
+        <div class="hero-content">
+            <img class="hero-logo" src="logo-web.png" alt="Logo Grupo Astronómico Metzteocuitlatl">
+            <h1>Metzteocuitlatl</h1>
+            <p class="hero-subtitle">Luna de Plata</p>
+            <p class="hero-description">
+                Somos jóvenes divulgadores que acercamos la ciencia a las comunidades del estado de Puebla.
+            </p>
+            <div class="cta-buttons">
+                <a href="#actividades" class="btn btn-primary">Explorar</a>
+                <a href="#proyecto" class="btn btn-secondary">Proyecto SECIHTI 2026</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="actividades" class="fade-in">
+        <svg class="section-planet planet-pink" viewBox="0 0 140 140" style="top: 5%; right: 3%; width: 120px;"><use href="#planetPink"/></svg>
+        <h2 class="section-title">Actividades</h2>
+        <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+            No llevamos ciencia a las comunidades: mostramos la ciencia que ya existe en ellas.
+            Cada actividad deja capacidades instaladas para que la comunidad pueda continuar por cuenta propia.
+        </p>
+
+        <div class="activities-grid">
+            <div class="activity-card">
+                <div class="activity-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-moon"/></svg></div>
+                <h3>Ruta Astronómica</h3>
+                <p>Observación del cielo con telescopios de alta calidad donde el cielo es el aula. Diálogo entre la cosmovisión náhuatl y la astronomía moderna, con traducción simultánea al náhuatl.</p>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-flask"/></svg></div>
+                <h3>Ciencia en la Cocina</h3>
+                <p>La fermentación del pulque es microbiología. La nixtamalización es química inorgánica. Las cocineras son co-facilitadoras: ellas explican primero, nosotros traducimos.</p>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-geo"/></svg></div>
+                <h3>Bordado y Geometría</h3>
+                <p>Las manos que bordan conocen de simetría, traslación, rotación y fractales. Infografías bilingües co-diseñadas conectando patrones con contenidos educativos.</p>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-telescope"/></svg></div>
+                <h3>Taller: Fabricación de telescopios</h3>
+                <p>Ensamblamos telescopios con engranajes de lavadoras recicladas, tubos PET y lentes co-desarrolladas con el Laboratorio de Óptica de la BUAP. Certificado de "Constructor de Instrumentos Científicos".</p>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-microscope"/></svg></div>
+                <h3>Taller: Microscopía accesible</h3>
+                <p>Construcción de microscopios funcionales a partir de cámaras de celulares reciclados. La primera exploración parte de muestras del entorno inmediato: agua, tierra, tejidos y alimentos.</p>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-star"/></svg></div>
+                <h3>Investigación comunitaria</h3>
+                <p>Mapa Estelar Intercultural & Glosario Cósmico Náhuatl. Rescate de memoria astronómica recopilando nombres tradicionales, etimología, historias y uso en el calendario agrícola.</p>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-clipboard"/></svg></div>
+                <h3>Protocolo de entrada: escucha antes que ciencia</h3>
+                <p>Antes de llevar un solo telescopio realizamos un diagnóstico participativo: reuniones con autoridades, docentes, madres y jóvenes, y la firma de compromisos mutuos. El grupo aporta ciencia y equipo; la comunidad aporta saberes, espacios y continuidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impacto" class="impact fade-in">
+        <svg class="section-planet planet-cyan" viewBox="0 0 220 150" style="top: 8%; left: 1%; width: 185px;"><use href="#planetCyan"/></svg>
+        <h2 class="section-title">Impacto</h2>
+        <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem;">
+            Esto no es una promesa, sino una continuación. Hemos recorrido comunidades tendiendo puentes entre el conocimiento ancestral y la ciencia contemporánea.
+        </p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">20+</div>
+                <div class="stat-label">Municipios en Puebla</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1700+</div>
+                <div class="stat-label">Estudiantes impactados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1500+</div>
+                <div class="stat-label">Personas en ferias</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">11</div>
+                <div class="stat-label">Juntas auxiliares</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">16</div>
+                <div class="stat-label">Escuelas en Oaxaca</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Comunidades en primera etapa</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Section -->
+    <section id="proyecto" class="fade-in">
+        <svg class="section-planet planet-purple" viewBox="0 0 140 140" style="top: 6%; right: 4%; width: 95px;"><use href="#planetPurple"/></svg>
+        <p class="eyebrow">SECIHTI 2026 · Proyectos comunitarios con saberes originarios</p>
+        <h2 class="section-title">Nocheztli</h2>
+        <p class="section-lead">
+            Ruta Astronómica Intercultural presentada a la Secretaría de Ciencia, Humanidades, Tecnología e Innovación del Estado de Puebla.
+        </p>
+
+        <div class="project-container">
+            <div class="project-facts">
+                <div class="fact">
+                    <span class="fact-num">$19,850</span>
+                    <span class="fact-lbl">Presupuesto (MXN)</span>
+                </div>
+                <div class="fact">
+                    <span class="fact-num">3,500+</span>
+                    <span class="fact-lbl">Personas beneficiadas</span>
+                </div>
+                <div class="fact">
+                    <span class="fact-num">17</span>
+                    <span class="fact-lbl">Juntas auxiliares</span>
+                </div>
+                <div class="fact">
+                    <span class="fact-num">2ª</span>
+                    <span class="fact-lbl">Etapa · economía circular</span>
+                </div>
+            </div>
+
+            <div class="project-cols">
+                <div>
+                    <h3 class="project-h">Objetivo general</h3>
+                    <p>Reducir la brecha de educación científica en comunidades indígenas y juntas auxiliares del estado de Puebla mediante una Ruta Astronómica Intercultural que integre los saberes tradicionales con herramientas científicas, tecnológicas y humanísticas.</p>
+                </div>
+                <div>
+                    <h3 class="project-h">Propuesta de valor</h3>
+                    <blockquote class="project-quote">Los saberes originarios no son el punto de partida "simpático" para llegar a la ciencia real. Son ciencia real. El calendario mexica es astronomía de precisión. El mole es química aplicada. El bordado totonaco es geometría viva.</blockquote>
+                </div>
+            </div>
+
+            <h3 class="project-h">Desglose de inversión</h3>
+            <ul class="budget-list">
+                <li>
+                    <span class="b-name">Traslados</span>
+                    <span class="b-desc">Movilización a 17 juntas auxiliares y comunidades indígenas</span>
+                    <span class="b-amt">$4,500</span>
+                </li>
+                <li>
+                    <span class="b-name">Insumos telescopios</span>
+                    <span class="b-desc">Lentes, engranajes reciclados, tubos PET · Lab. Óptica BUAP</span>
+                    <span class="b-amt">$4,500</span>
+                </li>
+                <li>
+                    <span class="b-name">Filtros solares</span>
+                    <span class="b-desc">~15 piezas certificadas · Pasaporte del Explorador Cósmico</span>
+                    <span class="b-amt">$4,000</span>
+                </li>
+                <li>
+                    <span class="b-name">Impresora y material</span>
+                    <span class="b-desc">Pasaportes, infografías y calendarios bilingües náhuatl-español</span>
+                    <span class="b-amt">$3,500</span>
+                </li>
+                <li>
+                    <span class="b-name">Artículos de laboratorio</span>
+                    <span class="b-desc">Kits de ciencia para talleres y escuelas</span>
+                    <span class="b-amt">$1,850</span>
+                </li>
+                <li>
+                    <span class="b-name">Materiales de uso único</span>
+                    <span class="b-desc">Papelería, reactivos e insumos seleccionados con la comunidad</span>
+                    <span class="b-amt">$1,500</span>
+                </li>
+            </ul>
+
+            <h3 class="project-h">Aliados institucionales</h3>
+            <p class="allies">Laboratorio de Óptica BUAP · Laboratorio de Materiales BUAP · INAOE · FCFM BUAP · Scientia Zapata (Club de Física) · Sociedad Científica Juvenil</p>
+        </div>
+    </section>
+
+    <!-- Recognition Section -->
+    <section id="reconocimientos" class="fade-in">
+        <svg class="section-planet planet-pink" viewBox="0 0 140 140" style="bottom: 8%; left: 2%; width: 110px;"><use href="#planetPink"/></svg>
+        <h2 class="section-title">Reconocimientos</h2>
+        <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem;">
+            Nuestro trabajo ha recibido reconocimiento en distintas plataformas de alcance nacional.
+        </p>
+
+        <div class="recognition-grid">
+            <div class="recognition-card">
+                <div class="recognition-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-medal"/></svg></div>
+                <h3>Primer lugar - Instituto de la Juventud, Puebla</h3>
+                <p>Primer lugar en pitch de emprendimiento dentro del Programa Jóvenes con Rumbo del Instituto Municipal de la Juventud. Distinguido, además, por el programa Jóvenes Talento del Estado de Puebla.</p>
+            </div>
+
+            <div class="recognition-card">
+                <div class="recognition-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-building"/></svg></div>
+                <h3>Reconocimiento nacional - 2do. Encuentro Nacional Niñas STEM 2025</h3>
+                <p>Reconocimiento del Comité Nacional STEM UTyP · UNESCO, avalado por la SEP, por el liderazgo en la planeación de un evento de alcance nacional para el fomento de vocaciones científicas. Atlixco, Puebla, 24 de junio de 2025.</p>
+            </div>
+
+            <div class="recognition-card">
+                <div class="recognition-icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-signal"/></svg></div>
+                <h3>Medios y cobertura</h3>
+                <p>Cobertura periodística en medios locales y regionales por divulgación científica intercultural en San Pedro Cholula y comunidades de Puebla. Referente juvenil en educación STEM con perspectiva de género.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section - NEW -->
+    <section id="equipo" class="approach-section fade-in">
+        <svg class="section-planet planet-cyan" viewBox="0 0 220 150" style="top: 9%; right: 2%; width: 170px;"><use href="#planetCyan"/></svg>
+        <h2 class="section-title">Nuestro enfoque</h2>
+        <p class="approach-intro">
+            Somos un colectivo de jóvenes poblanos con formación científica que decidió hacer lo que pocos hacen:
+            llegar a donde la ciencia no suele llegar y hablar en el idioma que la comunidad entiende.
+        </p>
+
+        <div class="approach-grid">
+            <div class="approach-card">
+                <div class="icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-atom"/></svg></div>
+                <h3>Modelo STEM intercultural</h3>
+                <p>Ciencia, tecnología, ingeniería y matemáticas con enfoque intercultural. El conocimiento no tiene una sola forma de expresarse.</p>
+            </div>
+
+            <div class="approach-card">
+                <div class="icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-globe"/></svg></div>
+                <h3>Saberes originarios como ciencia</h3>
+                <p>La solución no consiste en llevar más ciencia, sino en mostrar que la ciencia ya habita en las comunidades, con el mismo rigor y la misma dignidad que en los libros de texto.</p>
+            </div>
+
+            <div class="approach-card">
+                <div class="icon"><svg class="ic" viewBox="0 0 24 24"><use href="#ic-recycle"/></svg></div>
+                <h3>Economía circular</h3>
+                <p>El proyecto se sostiene con materiales didácticos, calendarios astronómicos, lentes solares, cursos de programación y asesorías para olimpiadas. Autosustentable desde la primera etapa.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <div class="footer-logo"><img src="logo-web.png" alt="">Metzteocuitlatl</div>
+                    <div class="footer-subtitle">Luna de Plata</div>
+                    <p class="footer-description">
+                        Colectivo de jóvenes divulgadores científicos de Puebla. Acercamos la ciencia a las comunidades integrando los saberes originarios con herramientas STEM: la mica que brilla con luz de luna.
+                    </p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="#actividades">Actividades</a></li>
+                        <li><a href="#impacto">Impacto</a></li>
+                        <li><a href="#proyecto">Proyecto SECIHTI</a></li>
+                        <li><a href="#reconocimientos">Reconocimientos</a></li>
+                        <li><a href="#equipo">Nuestro enfoque</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Contacto</h4>
+                    <div class="footer-meta">
+                        <svg class="ic" viewBox="0 0 24 24"><use href="#ic-pin"/></svg>
+                        <span>Puebla, México<br>Tierra del Popocatépetl</span>
+                    </div>
+                    <div class="footer-meta">
+                        <svg class="ic" viewBox="0 0 24 24"><use href="#ic-mail"/></svg>
+                        <a href="mailto:aamcholula@gmail.com" class="footer-email">aamcholula@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Grupo Astronómico Metzteocuitlatl. Todos los derechos reservados.</p>
+                <p class="footer-tagline">Ciencia con raíces, mirada hacia las estrellas.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Generate stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
